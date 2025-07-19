@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ႳUΣΣП BΣΛƬЯICΣ 🌸</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #0a0a12;
+      overflow: hidden;
+      color: #FF6EC7;
+      font-family: 'Courier New', monospace;
+      text-shadow: 0 0 5px #FF6EC7, 0 0 10px #FF6EC7;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.7;
+    }
+
+    .title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 30px;
+      z-index: 2;
+      letter-spacing: 3px;
+      background: linear-gradient(45deg, #FF6EC7, #9D50FF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 8px #9D50FF);
+    }
+
+    .btn-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .btn {
+      --color: #FF6EC7;
+      --color2: #1a0a1a;
+      width: 220px;
+      padding: 0.8em 1.75em;
+      background-color: transparent;
+      border-radius: 6px;
+      border: 1px solid var(--color);
+      transition: 0.5s;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      z-index: 1;
+      font-weight: 500;
+      font-size: 17px;
+      font-family: 'Courier New', monospace;
+      text-transform: uppercase;
+      color: var(--color);
+      text-shadow: 0 0 5px var(--color);
+      box-shadow: 0 0 10px rgba(255, 110, 199, 0.3);
+    }
+
+    .btn::after, .btn::before {
+      content: '';
+      display: block;
+      height: 100%;
+      width: 100%;
+      transform: skew(90deg) translate(-50%, -50%);
+      position: absolute;
+      inset: 50%;
+      left: 25%;
+      z-index: -1;
+      transition: 0.5s ease-out;
+      background: linear-gradient(45deg, #FF6EC7, #9D50FF);
+    }
+
+    .btn::before {
+      top: -50%;
+      left: -25%;
+      transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .btn:hover::before {
+      transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .btn:hover::after {
+      transform: skew(45deg) translate(-50%, -50%);
+    }
+
+    .btn:hover {
+      color: var(--color2);
+      text-shadow: none;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 20px;
+      font-size: 0.8rem;
+      opacity: 0.7;
+      z-index: 2;
+    }
+
+    /* New Music Control Styles */
+    .music-control {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid #FF6EC7;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      color: #FF6EC7;
+      font-size: 20px;
+      transition: all 0.3s;
+    }
+
+    .music-control:hover {
+      background: rgba(255,110,199,0.2);
+      transform: scale(1.1);
+    }
+
+    .volume-slider {
+      position: fixed;
+      top: 70px;
+      right: 20px;
+      width: 120px;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .music-control:hover + .volume-slider,
+    .volume-slider:hover {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="matrix"></canvas>
+  
+  <!-- Music Control Elements -->
+  <div class="music-control" id="musicToggle">♫</div>
+  <input type="range" class="volume-slider" id="volumeControl" min="0" max="1" step="0.1" value="0.3">
+
+  <div class="title">ႳUΣΣП BΣΛƬЯICΣ 🌸</div>
+
+  <div class="btn-container">
+    <button onclick="window.open(`/pair`)" class="btn">Pair Code</button>
+    <button onclick="window.open(`https://github.com/Pika270/Kokkoro-Natsume-MD`)" class="btn">GitHub</button>
+    <button onclick="window.open(`https://whatsapp.com/channel/0029VaoOiuwDp2QH070eTE01`)" class="btn">Channel</button>
+  </div>
+
+  <div class="footer">© 2025–2026 𝚃𝙷𝚄𝙶 𝚃𝙴𝙲𝙷𝙸𝙴𝚂. 𝙰𝙻𝙻 𝚁𝙸𝙶𝙷𝚃𝚂 𝚁𝙴𝚂𝙴𝚁𝚅𝙴𝙳</div>
+
+  <!-- Audio Element -->
+  <audio id="bgMusic" loop>
+    <source src="https://i.ouim.me/i/a663fcbb.mp3" type="audio/mpeg">
+    Your browser does not support audio.
+  </audio>
+
+  <script>
+    // Matrix Rain Effect
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const letters = 'ナツメ コッコロ 0123456789ΛƬƧƲMΞᙢᗫ🌸✿♡★☆✧･ﾟ: *✧･ﾟ:*';
+    const matrix = letters.split('');
+    const fontSize = 18;
+    const columns = canvas.width / fontSize;
+    const drops = Array.from({ length: columns }).fill(1);
+
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(10, 10, 18, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#FF6EC7';
+      ctx.font = `${fontSize}px 'Courier New', monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = matrix[Math.floor(Math.random() * matrix.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+    setInterval(drawMatrix, 50);
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    // Music Control System
+    const music = document.getElementById('bgMusic');
+    const musicToggle = document.getElementById('musicToggle');
+    const volumeControl = document.getElementById('volumeControl');
+    let isMusicPlaying = false;
+
+    // Set default volume
+    music.volume = 0.3;
+
+    // Volume control
+    volumeControl.addEventListener('input', () => {
+      music.volume = volumeControl.value;
+    });
+
+    // Play/pause toggle
+    musicToggle.addEventListener('click', () => {
+      if (isMusicPlaying) {
+        music.pause();
+        musicToggle.textContent = "♬";
+      } else {
+        music.play().catch(e => console.log("Auto-play prevented:", e));
+        musicToggle.textContent = "❚❚";
+      }
+      isMusicPlaying = !isMusicPlaying;
+    });
+
+    // Enable audio on first interaction
+    const enableAudio = () => {
+      document.body.removeEventListener('click', enableAudio);
+      document.body.removeEventListener('keydown', enableAudio);
+    };
+    document.body.addEventListener('click', enableAudio);
+    document.body.addEventListener('keydown', enableAudio);
+  </script>
+
+</body>
+</html>
