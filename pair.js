@@ -60,7 +60,7 @@ router.get('/', async (req, res) => {
           }  
 
      // ✅ ULTRA-COMPACT SINGLE-LINE ESSENTIAL SESSION (WITH ALL KEYS)
-// ✅ ULTRA-COMPACT SINGLE-LINE ESSENTIAL SESSION (WITH ALL 28 KEYS)
+// ✅ ULTRA-COMPACT SINGLE-LINE ESSENTIAL SESSION (WITH ALL 42 KEYS)
 const session = JSON.stringify({
   "noiseKey": raw.noiseKey,
   "pairingEphemeralKeyPair": raw.pairingEphemeralKeyPair,
@@ -95,6 +95,15 @@ const session = JSON.stringify({
   "myAppStateKeyId": raw.myAppStateKeyId,
   "preKeys": raw.preKeys,
   "senderKeys": raw.senderKeys,
+  "senderKeyMemory": raw.senderKeyMemory,  
+  "sessions": raw.sessions,  
+  "appStateSyncKeys": raw.appStateSyncKeys, 
+  "appStateVersions": raw.appStateVersions, 
+  "chatSettings": raw.chatSettings, 
+  "processedAppStateSyncKeyIds": raw.processedAppStateSyncKeyIds,
+  "userDevices": raw.userDevices, 
+  "is24HrFormat": raw.is24HrFormat,
+  "reconnectAttempts": raw.reconnectAttempts,
   "timestamp": raw.timestamp
 });
 
